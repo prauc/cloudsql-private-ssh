@@ -39,6 +39,7 @@ gcloud compute routers create $NAT_ROUTER \
 gcloud compute routers nats create nat-config \
     --router-region $LOCATION \
     --router $NAT_ROUTER \
+    --project=$PROJECT_ID \
     --nat-all-subnet-ip-ranges \
     --auto-allocate-nat-external-ips
 
@@ -48,6 +49,7 @@ INSTANCE_NAME=cloudsql-bastion-host
 gcloud compute instances create $INSTANCE_NAME \
     --machine-type=e2-micro \
     --zone="$LOCATION-a" \
+    --project=$PROJECT_ID \
     --network-interface=stack-type=IPV4_ONLY,subnet=$VPC_SUBNET,no-address \
     --metadata-from-file=startup-script="./src/cloudsql_auth_proxy_setup.sh" \
     --metadata="CLOUDSQL_INSTANCE=$CLOUDSQL_INSTANCE,CLOUDSQL_CONNECTION_STRING=$CLOUDSQL_CONNECTION_STRING" \
